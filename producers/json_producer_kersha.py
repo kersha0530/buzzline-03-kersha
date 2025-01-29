@@ -1,18 +1,10 @@
-#####################################
-# Import Modules
-#####################################
-
-# Import packages from Python Standard Library
 import os
 import sys
 import time
-import pathlib  # works with file paths
-import json  # works with JSON data
-
-# Import external packages
+import pathlib  # work with file paths
+import json  # work with JSON data
+from datetime import datetime
 from dotenv import load_dotenv
-
-# Import functions from local modules
 from utils.utils_producer import (
     verify_services,
     create_kafka_producer,
@@ -20,48 +12,32 @@ from utils.utils_producer import (
 )
 from utils.utils_logger import logger
 
-#####################################
 # Load Environment Variables
-#####################################
 load_dotenv()
 
-#####################################
 # Getter Functions for .env Variables
-#####################################
-
 def get_kafka_topic() -> str:
     """Fetch Kafka topic from environment or use default."""
-    topic = os.getenv("KAFKA_TOPIC", "unknown_topic")
+    topic = os.getenv("BUZZ_TOPIC", "buzzline_json")  # Ensure this matches with consumer's default
+
     logger.info(f"Kafka topic: {topic}")
     return topic
 
 def get_message_interval() -> int:
     """Fetch message interval from environment or use default."""
-    interval = int(os.getenv("KAFKA_INTERVAL_SECONDS", 1))  # Default to 1 second
+    interval = int(os.getenv("BUZZ_INTERVAL_SECONDS", 1))
     logger.info(f"Message interval: {interval} seconds")
     return interval
 
-#####################################
 # Set up Paths
-#####################################
-
-# The parent directory of this file is its folder.
-# Go up one more parent level to get the project root.
 PROJECT_ROOT = pathlib.Path(__file__).parent.parent
 logger.info(f"Project root: {PROJECT_ROOT}")
-
-# Set directory where data is stored
 DATA_FOLDER: pathlib.Path = PROJECT_ROOT.joinpath("data")
 logger.info(f"Data folder: {DATA_FOLDER}")
-
-# Set the name of the data file
 DATA_FILE: pathlib.Path = DATA_FOLDER.joinpath("buzz.json")
 logger.info(f"Data file: {DATA_FILE}")
 
-#####################################
-# Custom Message Generator
-#####################################
-
+# Message Generator
 def generate_messages(file_path: pathlib.Path):
     """
     Read from a JSON file and yield them one by one, continuously.
@@ -89,25 +65,37 @@ def generate_messages(file_path: pathlib.Path):
                 # Iterate over the entries in the JSON file
                 for entry in json_data:
                     # Adding custom fields
-                    temperature = entry.get("temperature")
+                    sensor_status = entry.get("sensor_status", "inactive")
+                    user_temp_setting = entry.get("user_temp_setting", "N/A")
+                    remote_control_status = entry.get("remote_control_status", "N/A")
+                    temperature = entry.get("temperature", 0)
+
+                    # Prepare the message structure with the custom fields
                     message = {
                         "timestamp": datetime.utcnow().isoformat(),
-                        "temperature": temperature,
-                        "user_temp_setting": entry.get("user_temp_setting", "N/A"),
-                        "remote_control_status": entry.get("remote_control_status", "N/A"),
-                        "sensor_activity": entry.get("sensor_activity", "inactive"),
+                        "sensor_status": sensor_status,
+                        "user_temp_setting": user_temp_setting,
+                        "remote_control_status": remote_control_status,
                     }
 
                     # Added custom logic for temperature-related messages
-                    if temperature > 80:
-                        message["status_message"] = "Warning: It's too hot!"
-                    elif temperature < 40:
-                        message["status_message"] = "Warning: It's too cold!"
+                    if sensor_status == "active":
+                        message["status_message"] = "Sensor is active."
                     else:
-                        message["status_message"] = "Temperature is within range."
+                        message["status_message"] = "Sensor is inactive."
 
+                    # Logic to add temperature status messages
+                    if temperature > 80:
+                        message["temperature_status"] = "Warning: It's too hot!"
+                    elif temperature < 40:
+                        message["temperature_status"] = "Warning: It's too cold!"
+                    else:
+                        message["temperature_status"] = "Temperature is within range."
+
+                    # Log the generated message for debugging
                     logger.debug(f"Generated message: {message}")
                     yield message
+
         except FileNotFoundError:
             logger.error(f"File not found: {file_path}. Exiting.")
             sys.exit(1)
@@ -118,10 +106,8 @@ def generate_messages(file_path: pathlib.Path):
             logger.error(f"Unexpected error in message generation: {e}")
             sys.exit(3)
 
-#####################################
-# Main Function
-#####################################
 
+# Main Function
 def main():
     """
     Main entry point for this producer.
@@ -130,7 +116,6 @@ def main():
     - Creates a Kafka producer using the `create_kafka_producer` utility.
     - Streams generated JSON messages to the Kafka topic.
     """
-
     logger.info("START producer.")
     verify_services()
 
@@ -151,7 +136,7 @@ def main():
         logger.error("Failed to create Kafka producer. Exiting...")
         sys.exit(3)
 
-    # Create a topic if it doesn't exist
+    # Create topic if it doesn't exist
     try:
         create_kafka_topic(topic)
         logger.info(f"Kafka topic '{topic}' is ready.")
@@ -177,9 +162,6 @@ def main():
 
     logger.info("END producer.")
 
-#####################################
 # Conditional Execution
-#####################################
-
 if __name__ == "__main__":
     main()
