@@ -2,7 +2,8 @@ import os
 import sys
 import time
 import pathlib
-import json
+import csv
+import json 
 from datetime import datetime
 from dotenv import load_dotenv
 from utils.utils_producer import (
@@ -11,6 +12,7 @@ from utils.utils_producer import (
     create_kafka_topic,
 )
 from utils.utils_logger import logger
+
 
 # Load Environment Variables
 load_dotenv()
@@ -33,41 +35,36 @@ PROJECT_ROOT = pathlib.Path(__file__).parent.parent
 logger.info(f"Project root: {PROJECT_ROOT}")
 DATA_FOLDER: pathlib.Path = PROJECT_ROOT.joinpath("data")
 logger.info(f"Data folder: {DATA_FOLDER}")
-DATA_FILE: pathlib.Path = DATA_FOLDER.joinpath("smoker_data.json")  # Updated file name for smoker data
+DATA_FILE: pathlib.Path = DATA_FOLDER.joinpath("smoker_data_random.csv")  # Updated to reference the new random data CSV file
 logger.info(f"Data file: {DATA_FILE}")
 
 # Message Generator
 def generate_messages(file_path: pathlib.Path):
     """
-    Read from a JSON file and yield them one by one, continuously.
+    Read from a CSV file and yield them one by one, continuously.
 
     Args:
-        file_path (pathlib.Path): Path to the JSON file.
+        file_path (pathlib.Path): Path to the CSV file.
 
     Yields:
-        dict: A dictionary containing the JSON data with custom fields.
+        dict: A dictionary containing the CSV data with custom fields.
     """
     while True:
         try:
             logger.info(f"Opening data file in read mode: {file_path}")
-            with open(file_path, "r") as json_file:
+            with open(file_path, "r") as csv_file:
                 logger.info(f"Reading data from file: {file_path}")
 
-                # Load the JSON file as a list of dictionaries
-                json_data: list = json.load(json_file)
+                # Read the CSV file as a dictionary
+                csv_reader = csv.DictReader(csv_file)
 
-                if not isinstance(json_data, list):
-                    raise ValueError(
-                        f"Expected a list of JSON objects, got {type(json_data)}."
-                    )
-
-                # Iterate over the entries in the JSON file
-                for entry in json_data:
+                # Iterate over the rows in the CSV file
+                for entry in csv_reader:
                     # Adding custom fields
                     sensor_status = entry.get("sensor_status", "inactive")
                     user_temp_setting = entry.get("user_temp_setting", "N/A")
                     remote_control_status = entry.get("remote_control_status", "N/A")
-                    temperature = entry.get("temperature", 0)
+                    temperature = float(entry.get("temperature", 0))
 
                     # Prepare the message structure with the custom fields
                     message = {
@@ -98,9 +95,6 @@ def generate_messages(file_path: pathlib.Path):
         except FileNotFoundError:
             logger.error(f"File not found: {file_path}. Exiting.")
             sys.exit(1)
-        except json.JSONDecodeError as e:
-            logger.error(f"Invalid JSON format in file: {file_path}. Error: {e}")
-            sys.exit(2)
         except Exception as e:
             logger.error(f"Unexpected error in message generation: {e}")
             sys.exit(3)
@@ -112,7 +106,7 @@ def main():
 
     - Ensures the Kafka topic exists.
     - Creates a Kafka producer using the `create_kafka_producer` utility.
-    - Streams generated JSON messages to the Kafka topic.
+    - Streams generated messages to the Kafka topic.
     """
     logger.info("START producer.")
     verify_services()
@@ -163,5 +157,4 @@ def main():
 # Conditional Execution
 if __name__ == "__main__":
     main()
-
 

@@ -1,5 +1,6 @@
 import os
 import csv
+import json
 from dotenv import load_dotenv
 from utils.utils_consumer import create_kafka_consumer
 from utils.utils_logger import logger
@@ -15,13 +16,13 @@ load_dotenv()
 
 def get_kafka_topic() -> str:
     """Fetch Kafka topic from environment or use default."""
-    topic = os.getenv("KAFKA_TOPIC", "csv_topic")
+    topic = os.getenv("KAFKA_TOPIC", "smoker_topic")  # Ensure this topic matches your producer's topic
     logger.info(f"Kafka topic: {topic}")
     return topic
 
 def get_kafka_consumer_group_id() -> str:
     """Fetch Kafka consumer group id from environment or use default."""
-    group_id: str = os.getenv("KAFKA_CONSUMER_GROUP_ID", "default_group")
+    group_id = os.getenv("KAFKA_CONSUMER_GROUP_ID", "default_group")
     logger.info(f"Kafka consumer group id: {group_id}")
     return group_id
 
@@ -51,17 +52,20 @@ def process_message(message: str, csv_writer: csv.writer, csv_file) -> None:
         # Convert the message (JSON string) into a dictionary
         data = json.loads(message)
 
-        # Extract relevant fields from the message (add any new fields here)
+        # Extract relevant fields from the message
         timestamp = data.get("timestamp")
         temperature = data.get("temperature")
+        sensor_status = data.get("sensor_status", "N/A")
         user_temp_setting = data.get("user_temp_setting", "N/A")
         remote_control_status = data.get("remote_control_status", "N/A")
         sensor_activity = data.get("sensor_activity", "N/A")
+        status_message = data.get("status_message", "N/A")
+        temperature_status = data.get("temperature_status", "N/A")
 
         logger.info(f"Processed message: {data}")
 
         # Write the data to the CSV file
-        csv_writer.writerow([timestamp, temperature, user_temp_setting, remote_control_status, sensor_activity])
+        csv_writer.writerow([timestamp, temperature, sensor_status, user_temp_setting, remote_control_status, sensor_activity, status_message, temperature_status])
         logger.info(f"Written to CSV: {data}")
 
     except Exception as e:
@@ -95,7 +99,7 @@ def main() -> None:
         # Write CSV header if it's a new file
         file.seek(0, os.SEEK_END)  # Go to the end of the file
         if file.tell() == 0:  # Check if the file is empty
-            csv_writer.writerow(['timestamp', 'temperature', 'user_temp_setting', 'remote_control_status', 'sensor_activity'])  # CSV header
+            csv_writer.writerow(['timestamp', 'temperature', 'sensor_status', 'user_temp_setting', 'remote_control_status', 'sensor_activity', 'status_message', 'temperature_status'])  # CSV header
 
         # Create the Kafka consumer
         consumer = create_kafka_consumer(topic, group_id)
@@ -122,4 +126,3 @@ def main() -> None:
 if __name__ == "__main__":
     main()
 
-    main()
