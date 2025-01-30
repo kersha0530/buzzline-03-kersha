@@ -1,402 +1,128 @@
 [
     {
-        "message": "Data engineering is my passion.",
-        "author": "Eve"
+      "timestamp": "2025-01-01T10:00:00Z",
+      "message": "Let's go for a family hike this weekend!",
+      "author": "Kersha"
     },
     {
-        "message": "Distributed systems are fascinating.",
-        "author": "Alice"
+      "timestamp": "2025-01-01T10:10:00Z",
+      "message": "I love family movie nights! 🍿🎥",
+      "author": "Carlos"
     },
     {
-        "message": "Have a great day!",
-        "author": "Charlie"
+      "timestamp": "2025-01-01T10:20:00Z",
+      "message": "Baking cookies together is the best part of the holidays! 🍪",
+      "author": "Ian"
     },
     {
-        "message": "Data engineering is my passion.",
-        "author": "Alice"
+      "timestamp": "2025-01-01T10:30:00Z",
+      "message": "Game night with the fam is always a blast!",
+      "author": "Kairo"
     },
     {
-        "message": "Distributed systems are fascinating.",
-        "author": "Diana"
+      "timestamp": "2025-01-01T10:40:00Z",
+      "message": "Every day is a new adventure with family. 🌟",
+      "author": "Kersha"
     },
     {
-        "message": "Buzz messages for everyone.",
-        "author": "Alice"
+      "timestamp": "2025-01-01T10:50:00Z",
+      "message": "Don't forget to bring the snacks for the picnic! 🧺🍉",
+      "author": "Carlos"
     },
     {
-        "message": "Hello, Kafka world!",
-        "author": "Diana"
+      "timestamp": "2025-01-01T11:00:00Z",
+      "message": "Road trips are more fun with good music and great company! 🚗🎶",
+      "author": "Ian"
     },
     {
-        "message": "This is a buzz message.",
-        "author": "Eve"
+      "timestamp": "2025-01-01T11:10:00Z",
+      "message": "Building forts with pillows is a family tradition! 🛋️",
+      "author": "Kairo"
     },
     {
-        "message": "JSON makes life easier.",
-        "author": "Eve"
+      "timestamp": "2025-01-01T11:20:00Z",
+      "message": "Cooking dinner together is my favorite family activity. 🍽️",
+      "author": "Kersha"
     },
     {
-        "message": "JSON makes life easier.",
-        "author": "Alice"
+      "timestamp": "2025-01-01T11:30:00Z",
+      "message": "Who’s up for a family board game challenge? 🎲",
+      "author": "Carlos"
     },
     {
-        "message": "Data engineering is my passion.",
-        "author": "Diana"
+      "timestamp": "2025-01-01T11:40:00Z",
+      "message": "Swimming in the lake with family, nothing better! 🌊",
+      "author": "Ian"
     },
     {
-        "message": "JSON makes life easier.",
-        "author": "Diana"
+      "timestamp": "2025-01-01T11:50:00Z",
+      "message": "Family picnics are always the best way to spend a sunny day. 🧺",
+      "author": "Kairo"
     },
     {
-        "message": "Kafka is awesome.",
-        "author": "Charlie"
+      "timestamp": "2025-01-01T12:00:00Z",
+      "message": "Let’s go camping under the stars this weekend! ⛺🌟",
+      "author": "Kersha"
     },
     {
-        "message": "JSON makes life easier.",
-        "author": "Bob"
+      "timestamp": "2025-01-01T12:10:00Z",
+      "message": "S’mores by the campfire are a family favorite! 🔥🍫",
+      "author": "Carlos"
     },
     {
-        "message": "I love Python!",
-        "author": "Bob"
+      "timestamp": "2025-01-01T12:20:00Z",
+      "message": "The best memories are made with family. 💖",
+      "author": "Ian"
     },
     {
-        "message": "This is a buzz message.",
-        "author": "Eve"
+      "timestamp": "2025-01-01T12:30:00Z",
+      "message": "Family movie marathon this weekend, who’s in? 🍿🎬",
+      "author": "Kairo"
     },
     {
-        "message": "I love Python!",
-        "author": "Eve"
+      "timestamp": "2025-01-01T12:40:00Z",
+      "message": "Family road trips bring us closer together! 🚙💨",
+      "author": "Kersha"
     },
     {
-        "message": "Buzz messages for everyone.",
-        "author": "Alice"
+      "timestamp": "2025-01-01T12:50:00Z",
+      "message": "Time spent with family is always time well spent! ⏳💫",
+      "author": "Carlos"
     },
     {
-        "message": "This is a buzz message.",
-        "author": "Alice"
+      "timestamp": "2025-01-01T13:00:00Z",
+      "message": "Who’s up for a treasure hunt in the backyard? 🏴‍☠️",
+      "author": "Ian"
     },
     {
-        "message": "Data engineering is my passion.",
-        "author": "Diana"
+      "timestamp": "2025-01-01T13:10:00Z",
+      "message": "Let’s go to the beach for a family day in the sun! 🏖️",
+      "author": "Kairo"
     },
     {
-        "message": "I love Python!",
-        "author": "Eve"
+      "timestamp": "2025-01-01T13:20:00Z",
+      "message": "Family BBQs are the best way to spend weekends. 🍔🍉",
+      "author": "Kersha"
     },
     {
-        "message": "JSON makes life easier.",
-        "author": "Charlie"
+      "timestamp": "2025-01-01T13:30:00Z",
+      "message": "Family game night is always a blast! 🎮🎯",
+      "author": "Carlos"
     },
     {
-        "message": "Have a great day!",
-        "author": "Bob"
+      "timestamp": "2025-01-01T13:40:00Z",
+      "message": "Building sandcastles with the family never gets old. 🏰",
+      "author": "Ian"
     },
     {
-        "message": "Data engineering is my passion.",
-        "author": "Alice"
+      "timestamp": "2025-01-01T13:50:00Z",
+      "message": "Family road trip snacks make the journey so much better! 🍫🥤",
+      "author": "Kairo"
     },
     {
-        "message": "Kafka is awesome.",
-        "author": "Diana"
-    },
-    {
-        "message": "Kafka is awesome.",
-        "author": "Diana"
-    },
-    {
-        "message": "Hello, Kafka world!",
-        "author": "Bob"
-    },
-    {
-        "message": "Distributed systems are fascinating.",
-        "author": "Diana"
-    },
-    {
-        "message": "I love Python!",
-        "author": "Diana"
-    },
-    {
-        "message": "Have a great day!",
-        "author": "Alice"
-    },
-    {
-        "message": "Hello, Kafka world!",
-        "author": "Charlie"
-    },
-    {
-        "message": "JSON makes life easier.",
-        "author": "Diana"
-    },
-    {
-        "message": "I love Python!",
-        "author": "Bob"
-    },
-    {
-        "message": "Have a great day!",
-        "author": "Diana"
-    },
-    {
-        "message": "Hello, Kafka world!",
-        "author": "Alice"
-    },
-    {
-        "message": "JSON makes life easier.",
-        "author": "Alice"
-    },
-    {
-        "message": "Buzz messages for everyone.",
-        "author": "Charlie"
-    },
-    {
-        "message": "Buzz messages for everyone.",
-        "author": "Bob"
-    },
-    {
-        "message": "Streaming data is fun.",
-        "author": "Diana"
-    },
-    {
-        "message": "Have a great day!",
-        "author": "Diana"
-    },
-    {
-        "message": "I love Python!",
-        "author": "Alice"
-    },
-    {
-        "message": "Streaming data is fun.",
-        "author": "Charlie"
-    },
-    {
-        "message": "Kafka is awesome.",
-        "author": "Alice"
-    },
-    {
-        "message": "Kafka is awesome.",
-        "author": "Diana"
-    },
-    {
-        "message": "Kafka is awesome.",
-        "author": "Alice"
-    },
-    {
-        "message": "JSON makes life easier.",
-        "author": "Bob"
-    },
-    {
-        "message": "This is a buzz message.",
-        "author": "Bob"
-    },
-    {
-        "message": "Streaming data is fun.",
-        "author": "Diana"
-    },
-    {
-        "message": "Have a great day!",
-        "author": "Bob"
-    },
-    {
-        "message": "This is a buzz message.",
-        "author": "Eve"
-    },
-    {
-        "message": "Hello, Kafka world!",
-        "author": "Bob"
-    },
-    {
-        "message": "This is a buzz message.",
-        "author": "Alice"
-    },
-    {
-        "message": "Streaming data is fun.",
-        "author": "Eve"
-    },
-    {
-        "message": "Kafka is awesome.",
-        "author": "Alice"
-    },
-    {
-        "message": "JSON makes life easier.",
-        "author": "Bob"
-    },
-    {
-        "message": "This is a buzz message.",
-        "author": "Charlie"
-    },
-    {
-        "message": "Have a great day!",
-        "author": "Diana"
-    },
-    {
-        "message": "Distributed systems are fascinating.",
-        "author": "Bob"
-    },
-    {
-        "message": "Kafka is awesome.",
-        "author": "Alice"
-    },
-    {
-        "message": "Streaming data is fun.",
-        "author": "Alice"
-    },
-    {
-        "message": "Have a great day!",
-        "author": "Diana"
-    },
-    {
-        "message": "Streaming data is fun.",
-        "author": "Alice"
-    },
-    {
-        "message": "This is a buzz message.",
-        "author": "Diana"
-    },
-    {
-        "message": "Data engineering is my passion.",
-        "author": "Bob"
-    },
-    {
-        "message": "Have a great day!",
-        "author": "Diana"
-    },
-    {
-        "message": "Kafka is awesome.",
-        "author": "Alice"
-    },
-    {
-        "message": "Kafka is awesome.",
-        "author": "Eve"
-    },
-    {
-        "message": "Have a great day!",
-        "author": "Diana"
-    },
-    {
-        "message": "Buzz messages for everyone.",
-        "author": "Charlie"
-    },
-    {
-        "message": "This is a buzz message.",
-        "author": "Charlie"
-    },
-    {
-        "message": "Streaming data is fun.",
-        "author": "Alice"
-    },
-    {
-        "message": "Hello, Kafka world!",
-        "author": "Diana"
-    },
-    {
-        "message": "Kafka is awesome.",
-        "author": "Bob"
-    },
-    {
-        "message": "I love Python!",
-        "author": "Eve"
-    },
-    {
-        "message": "JSON makes life easier.",
-        "author": "Charlie"
-    },
-    {
-        "message": "I love Python!",
-        "author": "Charlie"
-    },
-    {
-        "message": "I love Python!",
-        "author": "Charlie"
-    },
-    {
-        "message": "I love Python!",
-        "author": "Diana"
-    },
-    {
-        "message": "Streaming data is fun.",
-        "author": "Diana"
-    },
-    {
-        "message": "Data engineering is my passion.",
-        "author": "Eve"
-    },
-    {
-        "message": "Buzz messages for everyone.",
-        "author": "Eve"
-    },
-    {
-        "message": "JSON makes life easier.",
-        "author": "Eve"
-    },
-    {
-        "message": "Have a great day!",
-        "author": "Alice"
-    },
-    {
-        "message": "I love Python!",
-        "author": "Bob"
-    },
-    {
-        "message": "I love Python!",
-        "author": "Bob"
-    },
-    {
-        "message": "This is a buzz message.",
-        "author": "Eve"
-    },
-    {
-        "message": "This is a buzz message.",
-        "author": "Alice"
-    },
-    {
-        "message": "Distributed systems are fascinating.",
-        "author": "Diana"
-    },
-    {
-        "message": "Streaming data is fun.",
-        "author": "Eve"
-    },
-    {
-        "message": "Have a great day!",
-        "author": "Charlie"
-    },
-    {
-        "message": "JSON makes life easier.",
-        "author": "Eve"
-    },
-    {
-        "message": "Buzz messages for everyone.",
-        "author": "Diana"
-    },
-    {
-        "message": "This is a buzz message.",
-        "author": "Charlie"
-    },
-    {
-        "message": "Distributed systems are fascinating.",
-        "author": "Charlie"
-    },
-    {
-        "message": "Buzz messages for everyone.",
-        "author": "Bob"
-    },
-    {
-        "message": "This is a buzz message.",
-        "author": "Eve"
-    },
-    {
-        "message": "Data engineering is my passion.",
-        "author": "Diana"
-    },
-    {
-        "message": "Data engineering is my passion.",
-        "author": "Alice"
-    },
-    {
-        "message": "Buzz messages for everyone.",
-        "author": "Diana"
-    },
-    {
-        "message": "JSON makes life easier.",
-        "author": "Alice"
+      "timestamp": "2025-01-01T14:00:00Z",
+      "message": "Making memories with family is the best gift. 🎁",
+      "author": "Kersha"
     }
-]
+  ]
+  

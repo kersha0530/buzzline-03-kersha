@@ -1,111 +1,83 @@
-# buzzline-03-case
+# Project: Buzzline-03-Kersha
+## Overview
+This repository contains scripts and resources for simulating and consuming data for a "smart smoker" application. The data is produced using Kafka and consumed from Kafka topics into CSV files. This project involves generating random smoker data and modifying consumer scripts to handle and store the data efficiently.
 
-Streaming data does not have to be simple text.
-Many of us are familiar with streaming video content and audio (e.g. music) files. 
+### File Descriptions
+1. smoker_temps.csv
+Purpose: This CSV file contains the base temperature data of the smoker, with timestamps and temperature readings at regular intervals.
+Details:
+The file includes columns for timestamp and temperature.
+The data is generated as part of the project to simulate smoker temperature readings over time.
+2. smoker_data_random.csv
+Purpose: This CSV file contains randomized data for testing purposes, simulating various scenarios of a smoker’s operation.
+Details:
+Columns: timestamp, temperature, sensor_status, user_temp_setting, remote_control_status, sensor_activity, status_message, temperature_status.
+Customizations:
+sensor_status: Alternates between active and inactive.
+user_temp_setting: Randomized between 150, 160, and 170°F.
+remote_control_status: Alternates between ON and OFF.
+sensor_activity: Alternates between active and inactive.
+status_message: Based on the sensor_status, it shows whether the sensor is active or inactive.
+temperature_status: If the temperature is above 80°F, it shows "Warning: It's too hot!" If below 40°F, "Warning: It's too cold!" Otherwise, it indicates the temperature is within range.
+3. buzz.json
+Purpose: A supporting JSON file that may contain relevant configuration or initial data, used as an input resource for some aspects of the project.
+Details: This file is referenced in other parts of the project as needed.
+4. Producer Script (csv_producer_kersha.py)
+Purpose: This Python script generates messages based on the data in smoker_data_random.csv and sends them to a Kafka topic.
+Details:
+Uses the smoker_data_random.csv as input to generate and send messages with the sensor_status, temperature, and related custom fields to the Kafka topic.
+The script runs continuously, producing messages every 5 seconds (can be configured in .env).
+5. Consumer Script (csv_consumer_kersha.py)
+Purpose: This Python script consumes the messages from the Kafka topic and writes them to a CSV file.
+Details:
+Reads messages from the Kafka topic (smoker_topic) and writes the data into output.csv.
+The consumer logs the process and writes additional information (like status_message, temperature_status, etc.) to the output file.
+### Customizations Added
+1. Randomized Data Generation
+For testing, a randomized dataset (smoker_data_random.csv) has been added. The dataset includes variables such as sensor_status, temperature, user_temp_setting, and more, to simulate the behavior of a smart smoker in various conditions.
+2. Producer and Consumer
+Producer:
+Sends messages at intervals to Kafka, ensuring the simulation data is streamed to the smoker_topic.
+Added logic to handle the status of the sensor and related temperature thresholds.
+Consumer:
+Reads from the Kafka topic and writes the data to a CSV file (output.csv).
+The script processes the received messages, converting them into a structured CSV file that can be easily used for further analysis.
+3. Kafka Integration
+The producer script connects to the Kafka broker, publishes data, and manages message flow.
+The consumer script connects to the same Kafka broker and consumes the data, converting the received messages into a CSV format.
+### Setup and Usage
+1. Dependencies
+Install required Python packages:
 
-Streaming data can be structured (e.g. csv files) or
-semi-structured (e.g. json data). 
+```bash```
 
-We'll work with two different types of data, and so we'll use two different Kafka topic names. 
-See [.env](.env). 
+pip install -r requirements.txt
+2. .env Configuration
+Create a .env file in the project root directory to configure the Kafka settings:
 
+```bash```
 
-## Task 1. Use Tools from Module 1 and 2
+KAFKA_BROKER=localhost:9092
+SMOKER_TOPIC=smoker_topic
+SMOKER_INTERVAL_SECONDS=5
+CSV_OUTPUT_FILE=output.csv
+KAFKA_CONSUMER_GROUP_ID=default_group
+3. Running the Producer
+To start the producer and begin sending messages to Kafka, run the following:
 
-Before starting, ensure you have completed the setup tasks in <https://github.com/denisecase/buzzline-01-case> and <https://github.com/denisecase/buzzline-02-case> first. 
-Python 3.11 is required. 
+```bash```
 
-## Task 2. Copy This Example Project and Rename
+python producers/csv_producer_kersha.py
+4. Running the Consumer
+To start the consumer and consume messages from Kafka:
 
-Once the tools are installed, copy/fork this project into your GitHub account
-and create your own version of this project to run and experiment with.
-Name it `buzzline-03-yourname` where yourname is something unique to you.
-Follow the instructions in [FORK-THIS-REPO.md](https://github.com/denisecase/buzzline-01-case/blob/main/docs/FORK-THIS-REPO.md).
-    
+```bash```
 
-## Task 3. Manage Local Project Virtual Environment
+python consumers/csv_consumer_kersha.py
+### Notes
+Ensure your Kafka and Zookeeper are running before starting the producer and consumer.
+Adjust the .env file for any custom configurations (e.g., Kafka broker address, topic name).
 
-Follow the instructions in [MANAGE-VENV.md](https://github.com/denisecase/buzzline-01-case/blob/main/docs/MANAGE-VENV.md) to:
-1. Create your .venv
-2. Activate .venv
-3. Install the required dependencies using requirements.txt.
-
-## Task 4. Start Zookeeper and Kafka (2 Terminals)
-
-If Zookeeper and Kafka are not already running, you'll need to restart them.
-See instructions at [SETUP-KAFKA.md] to:
-
-1. Start Zookeeper Service ([link](https://github.com/denisecase/buzzline-02-case/blob/main/docs/SETUP-KAFKA.md#step-7-start-zookeeper-service-terminal-1))
-2. Start Kafka ([link](https://github.com/denisecase/buzzline-02-case/blob/main/docs/SETUP-KAFKA.md#step-8-start-kafka-terminal-2))
-
-## Task 5. Start a JSON Producer
-
-In VS Code, open a terminal.
-Use the commands below to activate .venv, and start the producer. 
-
-Windows:
-
-```shell
-.venv\Scripts\activate
-py -m producers.json_producer_case
-```
-
-Mac/Linux:
-```zsh
-source .venv/bin/activate
-python3 -m producers.json_producer_case
-```
-
-What did we name the topic used with JSON data? 
-Hint: See the producer code and [.env](.env).
-
-## Task 6. Start a JSON Consumer
-
-Consumers process streaming data in real time.
-
-In VS Code, open a NEW terminal in your root project folder. 
-Use the commands below to activate .venv, and start the consumer. 
-
-Windows:
-```shell
-.venv\Scripts\activate
-py -m consumers.json_consumer_case
-```
-
-Mac/Linux:
-```zsh
-source .venv/bin/activate
-python3 -m consumers.json_consumer_case
-```
-
-What did we name the topic used with JSON data? 
-Hint: See the consumer code and [.env](.env).
-
-## Task 7. Start a CSV Producer
-
-Follow a similar process to start the csv producer. 
-You will need to:
-1. Open a new terminal. 
-2. Activate your .venv.
-3. Know the command that works on your machine to execute python (e.g. py or python3).
-4. Know how to use the -m (module flag to run your file as a module).
-5. Know the full name of the module you want to run. Hint: Look in the producers folder.
-
-What did we name the topic used with csv data? 
-Hint: See the producer code and [.env](.env).
-
-## Task 8. Start a CSV Consumer
-
-Follow a similar process to start the csv consumer. 
-You will need to:
-1. Open a new terminal. 
-2. Activate your .venv.
-3. Know the command that works on your machine to execute python (e.g. py or python3).
-4. Know how to use the -m (module flag to run your file as a module).
-5. Know the full name of the module you want to run. Hint: Look in the consumers folder.
-
-What did we name the topic used with csv data? 
-Hint: See the consumer code and [.env](.env).
 
 ## About the Smart Smoker (CSV Example)
 

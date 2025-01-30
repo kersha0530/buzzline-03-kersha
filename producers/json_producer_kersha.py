@@ -1,8 +1,8 @@
 import os
 import sys
 import time
-import pathlib  # work with file paths
-import json  # work with JSON data
+import pathlib
+import json
 from datetime import datetime
 from dotenv import load_dotenv
 from utils.utils_producer import (
@@ -18,8 +18,7 @@ load_dotenv()
 # Getter Functions for .env Variables
 def get_kafka_topic() -> str:
     """Fetch Kafka topic from environment or use default."""
-    topic = os.getenv("BUZZ_TOPIC", "buzzline_json")  # Ensure this matches with consumer's default
-
+    topic = os.getenv("BUZZ_TOPIC", "buzztopic")  # Kafka topic for messages
     logger.info(f"Kafka topic: {topic}")
     return topic
 
@@ -32,70 +31,38 @@ def get_message_interval() -> int:
 # Set up Paths
 PROJECT_ROOT = pathlib.Path(__file__).parent.parent
 logger.info(f"Project root: {PROJECT_ROOT}")
+
 DATA_FOLDER: pathlib.Path = PROJECT_ROOT.joinpath("data")
 logger.info(f"Data folder: {DATA_FOLDER}")
-DATA_FILE: pathlib.Path = DATA_FOLDER.joinpath("buzz.json")
+
+DATA_FILE: pathlib.Path = DATA_FOLDER.joinpath("buzz.json")  # Use the new family-friendly buzz json
 logger.info(f"Data file: {DATA_FILE}")
 
 # Message Generator
 def generate_messages(file_path: pathlib.Path):
     """
     Read from a JSON file and yield them one by one, continuously.
-
     Args:
         file_path (pathlib.Path): Path to the JSON file.
-
     Yields:
-        dict: A dictionary containing the JSON data with custom fields.
+        dict: A dictionary containing the JSON data.
     """
     while True:
         try:
-            logger.info(f"Opening data file in read mode: {file_path}")
-            with open(file_path, "r") as json_file:
-                logger.info(f"Reading data from file: {file_path}")
+            logger.info(f"Opening data file in read mode: {DATA_FILE}")
+            with open(DATA_FILE, "r") as json_file:
+                logger.info(f"Reading data from file: {DATA_FILE}")
 
                 # Load the JSON file as a list of dictionaries
                 json_data: list = json.load(json_file)
 
                 if not isinstance(json_data, list):
-                    raise ValueError(
-                        f"Expected a list of JSON objects, got {type(json_data)}."
-                    )
+                    raise ValueError(f"Expected a list of JSON objects, got {type(json_data)}.")
 
                 # Iterate over the entries in the JSON file
-                for entry in json_data:
-                    # Adding custom fields
-                    sensor_status = entry.get("sensor_status", "inactive")
-                    user_temp_setting = entry.get("user_temp_setting", "N/A")
-                    remote_control_status = entry.get("remote_control_status", "N/A")
-                    temperature = entry.get("temperature", 0)
-
-                    # Prepare the message structure with the custom fields
-                    message = {
-                        "timestamp": datetime.utcnow().isoformat(),
-                        "sensor_status": sensor_status,
-                        "user_temp_setting": user_temp_setting,
-                        "remote_control_status": remote_control_status,
-                    }
-
-                    # Added custom logic for temperature-related messages
-                    if sensor_status == "active":
-                        message["status_message"] = "Sensor is active."
-                    else:
-                        message["status_message"] = "Sensor is inactive."
-
-                    # Logic to add temperature status messages
-                    if temperature > 80:
-                        message["temperature_status"] = "Warning: It's too hot!"
-                    elif temperature < 40:
-                        message["temperature_status"] = "Warning: It's too cold!"
-                    else:
-                        message["temperature_status"] = "Temperature is within range."
-
-                    # Log the generated message for debugging
-                    logger.debug(f"Generated message: {message}")
-                    yield message
-
+                for buzz_entry in json_data:
+                    logger.debug(f"Generated JSON: {buzz_entry}")
+                    yield buzz_entry
         except FileNotFoundError:
             logger.error(f"File not found: {file_path}. Exiting.")
             sys.exit(1)
@@ -106,12 +73,10 @@ def generate_messages(file_path: pathlib.Path):
             logger.error(f"Unexpected error in message generation: {e}")
             sys.exit(3)
 
-
 # Main Function
 def main():
     """
     Main entry point for this producer.
-
     - Ensures the Kafka topic exists.
     - Creates a Kafka producer using the `create_kafka_producer` utility.
     - Streams generated JSON messages to the Kafka topic.
@@ -119,7 +84,7 @@ def main():
     logger.info("START producer.")
     verify_services()
 
-    # fetch .env content
+    # Fetch .env content
     topic = get_kafka_topic()
     interval_secs = get_message_interval()
 
@@ -129,9 +94,7 @@ def main():
         sys.exit(1)
 
     # Create the Kafka producer
-    producer = create_kafka_producer(
-        value_serializer=lambda x: json.dumps(x).encode("utf-8")
-    )
+    producer = create_kafka_producer(value_serializer=lambda x: json.dumps(x).encode("utf-8"))
     if not producer:
         logger.error("Failed to create Kafka producer. Exiting...")
         sys.exit(3)
@@ -162,6 +125,6 @@ def main():
 
     logger.info("END producer.")
 
-# Conditional Execution
 if __name__ == "__main__":
     main()
+
