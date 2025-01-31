@@ -22,16 +22,40 @@ This repository contains scripts and resources for simulating and consuming data
    - `status_message`: Based on the `sensor_status`, it shows whether the sensor is active or inactive.  
    - `temperature_status`: If the temperature is above 80°F, it shows "Warning: It's too hot!" If below 40°F, "Warning: It's too cold!" Otherwise, it indicates the temperature is within range.
 
-3. **buzz.json**  
-   **Purpose:** A supporting JSON file that contains family-friendly messages, serving as an input resource for the producer and consumer scripts.  
-   **Details:**  
+**Producer Script (csv_producer_kersha.py)**
+**Purpose:** This Python script generates messages based on the data in smoker_data_random.csv and sends them to a Kafka topic.
+**Details:**
+Uses the smoker_data_random.csv as input to generate and send messages with the sensor_status, temperature, and related custom fields to the Kafka topic.
+The script runs continuously, producing messages every 5 seconds (can be configured in the .env).
+**Consumer Script (csv_consumer_kersha.py)**
+**Purpose:** This Python script consumes the messages from the Kafka topic and writes them to a CSV file.
+**Details:**
+Reads messages from the Kafka topic (smoker_topic) and writes the data into output.csv.
+The consumer logs the process and writes additional information (like status_message, temperature_status, etc.) to the output file.
+### Customizations Added
+1. Randomized Data Generation
+For testing, a randomized dataset (smoker_data_random.csv) has been added. The dataset includes variables such as sensor_status, temperature, user_temp_setting, and more, to simulate the behavior of a smart smoker in various conditions.
+2. **Producer and Consumer**
+**Producer:**
+Sends messages at intervals to Kafka, ensuring the simulation data is streamed to the smoker_topic.
+Added logic to handle the status of the sensor and related temperature thresholds.
+**Consumer:**
+Reads from the Kafka topic and writes the data to a CSV file (output.csv).
+The script processes the received messages, converting them into a structured CSV file that can be easily used for further analysis.
+3. **Kafka Integration**
+The producer script connects to the Kafka broker, publishes data, and manages message flow.
+The consumer script connects to the same Kafka broker and consumes the data, converting the received messages into a CSV format.
+ 
+**buzz.json**  
+**Purpose:** A supporting JSON file that contains family-friendly messages, serving as an input resource for the producer and consumer scripts.  
+**Details:**  
    - The file is used by the producer to stream messages and by the consumer to receive and process the messages.  
    - **Example data:**  
      ```json
      [
        {
          "message": "The best part of the day is family time! 🌟",
-         "author": "Kersha"
+        "author": "Kersha"
        },
        {
          "message": "Let's cook something tasty today! 🍳",
@@ -48,17 +72,43 @@ This repository contains scripts and resources for simulating and consuming data
      ]
      ```
 
-4. **Producer Script (json_producer_case.py)**  
+4. **Producer Script (json_producer_kersha.py)**  
    **Purpose:** This Python script generates messages based on the data in `buzz.json` and sends them to a Kafka topic.  
    **Details:**  
    - Uses the `buzz.json` as input to generate and send messages with the family-friendly messages and related custom fields to the Kafka topic.  
    - The script runs continuously, producing messages at intervals (default: 1 second).
 
-5. **Consumer Script (json_consumer_case.py)**  
+   **Running the Producer**
+To start the producer and begin sending messages to Kafka, run the following:
+
+```bash```
+
+python producers/json_producer_kersha.py
+
+
+***Environment Configuration: .env***
+Ensure both scripts use the same Kafka topic (smoker_topic):
+```env```
+
+SMOKER_TOPIC=smoker_topic
+BUZZ_TOPIC=smoker_topic
+SMOKER_CONSUMER_GROUP_ID=smoker_consumer_group
+
+
+5. **Consumer Script (json_consumer_kersha.py)**  
    **Purpose:** This Python script consumes the messages from the Kafka topic and prints or processes the data.  
    **Details:**  
    - Reads messages from the Kafka topic (`buzztopic`) and processes them.  
    - The consumer logs and prints the message content (author and message).
+
+
+ **Running the Consumer**
+To start the consumer and consume messages from Kafka:
+
+```bash```
+
+python consumers/json_consumer_kersha.py
+
 
 ### Customizations Added
 1. **Randomized Data Generation**  
